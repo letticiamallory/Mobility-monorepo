@@ -1,6 +1,12 @@
-﻿# API scratch / secrets (never commit)
+# Env / secrets (never commit)
+.env
+.env.*
+apps/mobility/.env
+apps/mobility/.env.*
+apps/mobility-api/.env
+apps/mobility-api/.env.*
+# API scratch / secrets (never commit)
 apps/mobility-api/tmp-*
-
 # OTP binaries / heavy data (not in git)
 apps/mobility-api/otp/**/*.pbf
 apps/mobility-api/otp/**/*.jar
