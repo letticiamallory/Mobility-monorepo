@@ -1,0 +1,17 @@
+appId: com.mobility.app
+---
+- launchApp
+- extendedWaitUntil:
+    visible: "Para onde você quer ir?"
+    timeout: 60000
+- tapOn: "Para onde você quer ir?"
+- tapOn:
+    id: "input-destino"
+- inputText: "Unimontes"
+- tapOn: "Buscar rotas"
+- tapOn: "Sozinho"
+- assertNotVisible: "Não acessível"
+- tapOn: "Acompanhado"
+- extendedWaitUntil:
+    visible: "Rotas sugeridas"
+    timeout: 120000

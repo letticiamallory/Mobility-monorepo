@@ -1,0 +1,15 @@
+appId: com.mobility.app
+---
+- launchApp
+- extendedWaitUntil:
+    visible: "Para onde você quer ir?"
+    timeout: 60000
+- tapOn: "Para onde você quer ir?"
+- tapOn:
+    id: "input-destino"
+- inputText: "Terminal Central"
+- tapOn: "Buscar rotas"
+- tapOn: "Ver trajeto"
+- extendedWaitUntil:
+    visible: "Analisar trechos"
+    timeout: 120000

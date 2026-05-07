@@ -1,0 +1,7 @@
+﻿# API scratch / secrets (never commit)
+apps/mobility-api/tmp-*
+
+# OTP binaries / heavy data (not in git)
+apps/mobility-api/otp/**/*.pbf
+apps/mobility-api/otp/**/*.jar
+apps/mobility-api/otp/*.jar

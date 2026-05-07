@@ -1,0 +1,17 @@
+appId: com.mobility.app
+---
+- launchApp
+- extendedWaitUntil:
+    visible: "Entrar"
+    timeout: 60000
+- tapOn:
+    id: "input-email"
+- inputText: "teste@mobility.com"
+- tapOn:
+    id: "input-senha"
+- inputText: "Senha@123"
+- tapOn: "Entrar"
+- extendedWaitUntil:
+    visible: "Para onde você quer ir?"
+    timeout: 60000
+- assertVisible: "Olá"

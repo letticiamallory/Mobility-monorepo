@@ -1,0 +1,155 @@
+# Stack único: OpenTripPlanner (3 regiões) + Postgres + mobility-api + seed condicional de linhas.
+#
+# Na pasta otp/:
+#   docker compose -f docker-compose.otp.yml up --build
+#
+# Na raiz mobility-api (docker-compose.yml faz include deste arquivo):
+#   docker compose up --build
+#
+# Host (API + OTP):
+#   API Nest        → http://localhost:3000
+#   Montes Claros → http://localhost:8080
+#   Brasília      → http://localhost:8081
+#   São Paulo     → http://localhost:8082
+#   Postgres      → localhost:5432
+#
+# A API recebe OTP_URL_* apontando para os serviços Docker (rede interna), não localhost.
+#
+# Compose interpreta "$" no .env — use "$$" em segredos com $ (ex.: JWT_SECRET).
+#
+# Forçar novo scraping de linhas: docker compose -f otp/docker-compose.otp.yml run --rm -e FORCE_LINES_SEED=1 lines-seed
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: mobility-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+      POSTGRES_DB: Mobility
+    ports:
+      - '5432:5432'
+    volumes:
+      - mobility_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d Mobility']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  otp-montes-claros:
+    image: eclipse-temurin:25-jre-jammy
+    container_name: mobility-otp-montes-claros
+    volumes:
+      - ./graphs/montes-claros:/graphs:ro
+      - ./otp-shaded-2.9.0.jar:/otp.jar:ro
+    command:
+      - java
+      - -Xmx2048m
+      - -jar
+      - /otp.jar
+      - --load
+      - --serve
+      - /graphs
+    ports:
+      - '8080:8080'
+    mem_limit: 3g
+
+  otp-brasilia:
+    image: eclipse-temurin:25-jre-jammy
+    container_name: mobility-otp-brasilia
+    volumes:
+      - ./graphs/brasilia:/graphs:ro
+      - ./otp-shaded-2.9.0.jar:/otp.jar:ro
+    command:
+      - java
+      - -Xmx2048m
+      - -jar
+      - /otp.jar
+      - --load
+      - --serve
+      - /graphs
+    ports:
+      - '8081:8080'
+    mem_limit: 3g
+
+  otp-sao-paulo:
+    image: eclipse-temurin:25-jre-jammy
+    container_name: mobility-otp-sao-paulo
+    volumes:
+      - ./graphs/sao-paulo:/graphs:ro
+      - ./otp-shaded-2.9.0.jar:/otp.jar:ro
+    command:
+      - java
+      - -Xmx2048m
+      - -jar
+      - /otp.jar
+      - --load
+      - --serve
+      - /graphs
+    ports:
+      - '8082:8080'
+    mem_limit: 4g
+
+  api:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: mobility-api
+    ports:
+      - '3000:3000'
+    env_file:
+      - ../.env
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: 3000
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres123
+      DATABASE_NAME: Mobility
+      LINES_SEED_SECRET: ${LINES_SEED_SECRET:-}
+      # Dentro da rede Docker: host = nome do serviço, porta interna do OTP = 8080
+      OTP_URL: http://otp-montes-claros:8080
+      OTP_URL_MONTES_CLAROS: http://otp-montes-claros:8080
+      OTP_URL_BRASILIA: http://otp-brasilia:8080
+      OTP_URL_SAO_PAULO: http://otp-sao-paulo:8080
+    depends_on:
+      postgres:
+        condition: service_healthy
+      otp-montes-claros:
+        condition: service_started
+      otp-brasilia:
+        condition: service_started
+      otp-sao-paulo:
+        condition: service_started
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'node -e "require(\"http\").get(\"http://127.0.0.1:3000/\", (r) => process.exit(r.statusCode===200?0:1)).on(\"error\", () => process.exit(1))"',
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 90s
+
+  lines-seed:
+    image: node:22-alpine
+    container_name: mobility-lines-seed
+    volumes:
+      - ../scripts/docker-lines-seed.mjs:/scripts/docker-lines-seed.mjs:ro
+    environment:
+      API_URL: http://api:3000
+      API_NODE_ENV: ${NODE_ENV:-development}
+      LINES_SEED_SECRET: ${LINES_SEED_SECRET:-}
+      FORCE_LINES_SEED: ${FORCE_LINES_SEED:-0}
+    depends_on:
+      api:
+        condition: service_healthy
+    command: ['node', '/scripts/docker-lines-seed.mjs']
+    restart: 'no'
+
+volumes:
+  mobility_pg_data:

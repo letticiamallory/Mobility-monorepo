@@ -1,0 +1,29 @@
+# Fluxo PT + testIDs. Instale Maestro: https://docs.maestro.dev
+appId: com.mobility.app
+---
+- launchApp
+- extendedWaitUntil:
+    visible: "Entrar"
+    timeout: 60000
+- tapOn: "Registre-se"
+- extendedWaitUntil:
+    visible: "Nome"
+    timeout: 30000
+- tapOn:
+    id: "input-nome"
+- inputText: "Usuário Teste"
+- tapOn:
+    id: "input-email"
+- inputText: "teste@mobility.com"
+- tapOn:
+    id: "input-senha"
+- inputText: "Senha@123"
+- tapOn:
+    id: "input-confirma-senha"
+- inputText: "Senha@123"
+- tapOn: "Selecione"
+- tapOn: "Cadeirante"
+- tapOn: "Continue"
+- extendedWaitUntil:
+    visible: "Verifique seu email"
+    timeout: 60000

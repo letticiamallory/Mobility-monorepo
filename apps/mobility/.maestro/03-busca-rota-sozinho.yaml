@@ -1,0 +1,20 @@
+appId: com.mobility.app
+---
+- launchApp
+- extendedWaitUntil:
+    visible: "Para onde você quer ir?"
+    timeout: 60000
+- tapOn: "Para onde você quer ir?"
+- extendedWaitUntil:
+    visible: "Para onde você quer ir?"
+    timeout: 30000
+- tapOn:
+    id: "input-destino"
+- inputText: "Montes Claros Shopping"
+- tapOn: "Montes Claros Shopping"
+- tapOn: "Buscar rotas"
+- extendedWaitUntil:
+    visible: "Rotas sugeridas"
+    timeout: 120000
+- tapOn: "Sozinho"
+- assertVisible: "Acessível"

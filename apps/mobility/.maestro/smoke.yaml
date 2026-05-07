@@ -1,0 +1,18 @@
+# Smoke E2E — requer app instalado no emulador/dispositivo e Maestro CLI.
+# Expo Go (desenvolvimento): appId costuma ser host.exp.exponent
+# Dev client / produção: substitua por SEU_BUNDLE_ID (ex.: com.seuprojeto.mobility)
+#
+# Executar: npm run test:e2e:maestro
+# Docs: https://docs.maestro.dev
+
+appId: host.exp.exponent
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      text: ".*"
+    timeout: 30000
+- assertVisible:
+    text: "Mobility|Entrar|Cadastro|login"
+    optional: true

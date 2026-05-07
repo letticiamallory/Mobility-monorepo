@@ -1,0 +1,10 @@
+# Inclui o stack completo (OTP + Postgres + API + seed) definido em otp/docker-compose.otp.yml
+#
+# Na raiz mobility-api:
+#   docker compose up --build
+#
+# Ou diretamente:
+#   cd otp && docker compose -f docker-compose.otp.yml up --build
+
+include:
+  - path: otp/docker-compose.otp.yml

@@ -1,0 +1,91 @@
+{
+  "expo": {
+    "name": "Mobility",
+    "slug": "Mobility",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/ChatGPT Image 6 de mai. de 2026, 20_41_16.png",
+    "scheme": "mobility",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSAllowsLocalNetworking": true,
+          "NSExceptionDomains": {
+            "realtime4.mobilibus.com": {
+              "NSExceptionAllowsInsecureHTTPLoads": true,
+              "NSIncludesSubdomains": true
+            }
+          }
+        }
+      }
+    },
+    "android": {
+      "package": "com.mobility.app",
+      "softwareKeyboardLayoutMode": "resize",
+      "adaptiveIcon": {
+        "backgroundColor": "#0057A8",
+        "foregroundImage": "./assets/images/ChatGPT Image 6 de mai. de 2026, 20_41_16.png"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "usesCleartextTraffic": true
+    },
+    "web": {
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff",
+          "dark": {
+            "backgroundColor": "#000000"
+          }
+        }
+      ],
+      "expo-secure-store",
+      "@react-native-google-signin/google-signin",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/ChatGPT Image 6 de mai. de 2026, 20_41_16.png",
+          "color": "#0057A8",
+          "sounds": [],
+          "mode": "production"
+        }
+      ]
+    ],
+    "fonts": [
+      {
+        "family": "Agrandir-Regular",
+        "asset": "./assets/fonts/PPAgrandir-Regular.otf"
+      },
+      {
+        "family": "Agrandir-GrandHeavy",
+        "asset": "./assets/fonts/PPAgrandir-GrandHeavy.otf"
+      },
+      {
+        "family": "Agrandir-TextBold",
+        "asset": "./assets/fonts/PPAgrandirText-Bold.otf"
+      }
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "d903bffc-1d46-4de5-89c3-739f4b7e1617"
+      }
+    }
+  }
+}
