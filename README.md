@@ -8,13 +8,11 @@ Este documento descreve a **arquitetura**, como **rodar** front e back, variáve
 
 ## Demo
 
-Demonstração do app em vídeo curto no YouTube — clique na imagem para abrir o Short:
+Demonstração do app em vídeo curto no YouTube: clique na imagem para abrir o Short:
 
 [![Pré-visualização do vídeo — demo Mobility no YouTube](https://img.youtube.com/vi/OAHwycyjaSU/hqdefault.jpg)](https://www.youtube.com/shorts/OAHwycyjaSU)
 
 **[Abrir demo no YouTube (Short)](https://www.youtube.com/shorts/OAHwycyjaSU)** — se a miniatura não carregar, use o link direto.
-
-**Download Android (APK / build interno):** `https://expo.dev/artifacts/eas/kqdPLFhfXuUX543fEaE8SZ.apk`
 
 ---
 
