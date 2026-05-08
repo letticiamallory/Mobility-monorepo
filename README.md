@@ -8,8 +8,8 @@ Este documento descreve a **arquitetura**, como **rodar** front e back, variáve
 
 ## Demo
 
-- **Vídeo (YouTube)**: _colar link aqui_
-- **Download Android (APK)**: `https://expo.dev/artifacts/eas/kqdPLFhfXuUX543fEaE8SZ.apk`
+- **Vídeo (YouTube)**:
+
 
 ## Índice
 
@@ -318,5 +318,3 @@ Os pacotes neste monorepo estão marcados como **privados** / **`UNLICENSED`** n
 - [README — guia profissional (referência de estrutura)](https://coding-boot-camp.github.io/full-stack/github/professional-readme-guide/)
 
 ---
-
-**Última dica:** mantenha este README alinhado ao código quando mudar portas, serviços ou fluxos de deploy — um README atualizado economiza tempo para você e para quem clonar o repositório no GitHub.
