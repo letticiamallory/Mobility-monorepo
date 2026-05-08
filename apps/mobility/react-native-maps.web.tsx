@@ -3,7 +3,7 @@
  * Mantém a app compilável; o mapa real continua em Android/iOS.
  */
 import React, { forwardRef, useImperativeHandle, type ReactNode } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
 
 export const PROVIDER_GOOGLE = 'google';
 
@@ -20,7 +20,7 @@ export type MapViewRef = {
 };
 
 type MapViewProps = {
-  style?: object;
+  style?: StyleProp<ViewStyle>;
   children?: ReactNode;
   region?: Region;
   initialRegion?: Region;
@@ -29,7 +29,6 @@ type MapViewProps = {
   showsMyLocationButton?: boolean;
   scrollEnabled?: boolean;
   mapType?: string;
-  [key: string]: unknown;
 };
 
 const MapView = forwardRef<MapViewRef, MapViewProps>(function MapView(
@@ -59,7 +58,6 @@ type MarkerProps = {
   title?: string;
   pinColor?: string;
   anchor?: { x: number; y: number };
-  [key: string]: unknown;
 };
 
 export function Marker({ children, coordinate: _c, title: _t, pinColor: _p, anchor: _a, ...rest }: MarkerProps) {
@@ -73,8 +71,7 @@ type PolylineProps = {
   coordinates: LatLng[];
   strokeColor?: string;
   strokeWidth?: number;
-  [key: string]: unknown;
-}
+};
 
 export function Polyline(_props: PolylineProps) {
   return null;

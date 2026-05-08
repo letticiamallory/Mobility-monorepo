@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type ElementRef } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -18,6 +18,8 @@ import ForgotPasswordSvg from '../assets/images/undraw_forgot-password_nttj (1).
 import { API_URL } from '../constants/api';
 import { saveRememberMe, saveToken, saveUserInfo } from '../services/token.service';
 
+type CodeDigitInputRef = ElementRef<typeof TextInput>;
+
 export default function EmailConfirmationScreen() {
   const router = useRouter();
   const sx = useAccessibilitySurfaces();
@@ -30,7 +32,7 @@ export default function EmailConfirmationScreen() {
   const [confirmError, setConfirmError] = useState<string | null>(null);
   const [resending, setResending] = useState(false);
   const [resendLeftSeconds, setResendLeftSeconds] = useState(0);
-  const inputsRef = useRef<Array<TextInput | null>>([]);
+  const inputsRef = useRef<Array<CodeDigitInputRef | null>>([]);
 
   useEffect(() => {
     setUserEmail((emailParam ?? '').trim());

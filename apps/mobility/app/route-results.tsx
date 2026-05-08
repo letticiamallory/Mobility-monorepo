@@ -1,6 +1,15 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import { Fragment, useCallback, useEffect, useMemo, useRef, useState, type ComponentProps } from 'react';
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ComponentProps,
+  type ElementRef,
+} from 'react';
 import { ACTIVE_MOCK_WEATHER } from '../mocks';
 import {
   fetchDiverseRoutes,
@@ -597,7 +606,7 @@ export default function RouteResultsScreen() {
   >(null);
   /** Somente dígitos (máx. 4); um campo invisível preenche os quadrados em sequência. */
   const [manualTimeRaw, setManualTimeRaw] = useState('');
-  const manualTimeInputRef = useRef<TextInput>(null);
+  const manualTimeInputRef = useRef<ElementRef<typeof TextInput>>(null);
   /**
    * Evita que o fetch automático (ao abrir / mudar destino na URL) sobrescreva resultados
    * depois que o usuário já pediu outra busca via filtros ou “Buscar rotas” (endereços do header).

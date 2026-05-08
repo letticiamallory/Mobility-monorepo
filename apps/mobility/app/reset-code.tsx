@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type ElementRef } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -17,6 +17,8 @@ import { A11Y_HIT_SLOP } from '@/constants/accessibility';
 import ForgotPasswordSvg from '../assets/images/undraw_forgot-password_nttj (1).svg';
 import { verifyResetCode } from '../services/auth.service';
 
+type CodeDigitInputRef = ElementRef<typeof TextInput>;
+
 export default function ResetCodeScreen() {
   const router = useRouter();
   const sx = useAccessibilitySurfaces();
@@ -27,7 +29,7 @@ export default function ResetCodeScreen() {
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const [confirming, setConfirming] = useState(false);
   const [confirmError, setConfirmError] = useState<string | null>(null);
-  const inputsRef = useRef<Array<TextInput | null>>([]);
+  const inputsRef = useRef<Array<CodeDigitInputRef | null>>([]);
 
   useEffect(() => {
     setUserEmail((emailParam ?? '').trim());
