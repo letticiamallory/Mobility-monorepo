@@ -6,6 +6,11 @@ Este documento descreve a **arquitetura**, como **rodar** front e back, variáve
 
 ---
 
+## Demo
+
+- **Vídeo (YouTube)**: _colar link aqui_
+- **Download Android (APK)**: `https://expo.dev/artifacts/eas/3SCN73aWDRGe7D7KMGqkwV.apk`
+
 ## Índice
 
 - [Visão geral](#visão-geral)
