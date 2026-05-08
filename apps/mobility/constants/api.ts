@@ -75,12 +75,24 @@ function devBaseUrlFromExpo(): string | null {
   return null;
 }
 
-const fallbackByPlatform =
+/** Só para dev (Expo Go / emulador). Em release standalone, nunca usar 10.0.2.2 no celular físico. */
+const devOnlyFallback =
   Platform.OS === 'android'
     ? `http://10.0.2.2:${API_PORT}`
     : `http://127.0.0.1:${API_PORT}`;
 
-export const API_URL = fromEnv || devBaseUrlFromExpo() || fallbackByPlatform;
+const fromExpoDevHost = devBaseUrlFromExpo();
+
+export const API_URL =
+  fromEnv ||
+  fromExpoDevHost ||
+  (__DEV__ ? devOnlyFallback : '');
+
+if (!__DEV__ && !API_URL) {
+  console.warn(
+    '[constants/api] Build release sem EXPO_PUBLIC_API_URL. Configure no EAS (environments preview/production) e gere novo APK/AAB.',
+  );
+}
 
 if (__DEV__) {
   console.log(

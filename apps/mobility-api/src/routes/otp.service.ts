@@ -249,6 +249,16 @@ export class OtpService {
               departure: leg.from?.name ?? undefined,
               arrival: leg.to?.name ?? undefined,
               street_view_image: null,
+              points:
+                points.length >= 2
+                  ? points.map((p) => ({
+                      latitude: Number(p.lat),
+                      longitude: Number(p.lng),
+                    }))
+                  : [
+                      { latitude: Number(startPoint.lat), longitude: Number(startPoint.lng) },
+                      { latitude: Number(endPoint.lat), longitude: Number(endPoint.lng) },
+                    ],
             };
             if (transitAccessibilityReport) {
               stage.accessibility_report = transitAccessibilityReport;

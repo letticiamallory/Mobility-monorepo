@@ -317,6 +317,13 @@ export function routeIncidentCount(route: RouteLogicItem): number {
 }
 
 export function routeMatchesCompanionTab(route: RouteLogicItem, tab: CompanionTab): boolean {
+  // Regra de produto: "Sozinho" nunca deve mostrar rotas não-acessíveis ou com atenção,
+  // mesmo que a API marque `search_profile` como "alone".
+  if (tab === 'alone') {
+    if (route.accessible === false) return false;
+    if (routeNeedsAttention(route)) return false;
+  }
+
   const sp = route.search_profile;
   if (sp === 'alone' || sp === 'companied') {
     return sp === tab;

@@ -47,6 +47,11 @@ export interface RouteStage {
   duration: string;
   location: { lat: number; lng: number };
   end_location: { lat: number; lng: number };
+  /**
+   * Geometria mínima para traçar no app.
+   * Sempre que possível, contém uma polyline; no mínimo, início e fim do trecho.
+   */
+  points?: { latitude: number; longitude: number }[];
   /** Nome do ponto de embarque (compatível com o app). */
   stop_name?: string;
   /** Horário local da partida no formato HH:mm (transit). */
@@ -277,6 +282,10 @@ export class GoogleRoutesService {
                 duration: step.duration.text,
                 location: step.start_location,
                 end_location: step.end_location,
+                points: [
+                  { latitude: Number(step.start_location.lat), longitude: Number(step.start_location.lng) },
+                  { latitude: Number(step.end_location.lat), longitude: Number(step.end_location.lng) },
+                ],
                 stop_name: stopName || undefined,
                 departure_time: departClock,
                 transit_departure_unix:
@@ -360,6 +369,10 @@ export class GoogleRoutesService {
             duration: step.duration.text,
             location: step.start_location,
             end_location: step.end_location,
+            points: [
+              { latitude: Number(step.start_location.lat), longitude: Number(step.start_location.lng) },
+              { latitude: Number(step.end_location.lat), longitude: Number(step.end_location.lng) },
+            ],
             departure: undefined,
             arrival: undefined,
             accessible: true,

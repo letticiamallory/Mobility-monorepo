@@ -747,6 +747,12 @@ export class RoutesService {
         return emptyResponse;
       }
 
+      // Geometria mínima: garante que cada etapa tenha pontos suficientes para o app traçar o trajeto,
+      // mesmo quando houver warning/atenção (ex.: acessibilidade / slope).
+      if (originCoordinates && destinationCoordinates) {
+        this.ensureStagesHaveGeometry(routeOptions, originCoordinates, destinationCoordinates);
+      }
+
       routeOptions = this.applyTimeFilter(routeOptions, time_filter);
       const prefFlags = this.normalizeRoutePreferences(
         route_preferences,
@@ -960,6 +966,83 @@ export class RoutesService {
       throw new InternalServerErrorException('Erro ao calcular rota');
     } finally {
       deadline.cancel();
+    }
+  }
+
+  private ensureStagesHaveGeometry(
+    routes: RouteOption[],
+    origin: { lat: number; lon: number },
+    destination: { lat: number; lon: number },
+  ): void {
+    const isFiniteCoord = (lat: unknown, lng: unknown): lat is number =>
+      typeof lat === 'number' &&
+      typeof lng === 'number' &&
+      Number.isFinite(lat) &&
+      Number.isFinite(lng) &&
+      Math.abs(lat) <= 90 &&
+      Math.abs(lng) <= 180;
+
+    const looksLikeEmpty0 = (lat: number, lng: number) => lat === 0 && lng === 0;
+
+    for (const r of routes) {
+      const stages = r.stages ?? [];
+      for (let i = 0; i < stages.length; i += 1) {
+        const st = stages[i] as RouteStage & {
+          points?: { latitude: number; longitude: number }[];
+        };
+
+        const prev = stages[i - 1] as RouteStage | undefined;
+        const next = stages[i + 1] as RouteStage | undefined;
+
+        const prevEnd = prev?.end_location;
+        const nextStart = next?.location;
+
+        // Corrige location/end_location inválidos (0/0, NaN, etc.)
+        if (
+          !st.location ||
+          !isFiniteCoord(st.location.lat, st.location.lng) ||
+          looksLikeEmpty0(st.location.lat, st.location.lng)
+        ) {
+          const fallback =
+            prevEnd && isFiniteCoord(prevEnd.lat, prevEnd.lng) && !looksLikeEmpty0(prevEnd.lat, prevEnd.lng)
+              ? prevEnd
+              : { lat: origin.lat, lng: origin.lon };
+          st.location = { lat: fallback.lat, lng: fallback.lng };
+        }
+
+        if (
+          !st.end_location ||
+          !isFiniteCoord(st.end_location.lat, st.end_location.lng) ||
+          looksLikeEmpty0(st.end_location.lat, st.end_location.lng)
+        ) {
+          const fallback =
+            nextStart &&
+            isFiniteCoord(nextStart.lat, nextStart.lng) &&
+            !looksLikeEmpty0(nextStart.lat, nextStart.lng)
+              ? nextStart
+              : { lat: destination.lat, lng: destination.lon };
+          st.end_location = { lat: fallback.lat, lng: fallback.lng };
+        }
+
+        // Se points não existe ou é curto demais, cria geometria mínima com início+fim.
+        const pts = Array.isArray(st.points) ? st.points : [];
+        const filtered = pts.filter(
+          (p) =>
+            p &&
+            typeof p.latitude === 'number' &&
+            typeof p.longitude === 'number' &&
+            Number.isFinite(p.latitude) &&
+            Number.isFinite(p.longitude),
+        );
+        if (filtered.length < 2) {
+          st.points = [
+            { latitude: Number(st.location.lat), longitude: Number(st.location.lng) },
+            { latitude: Number(st.end_location.lat), longitude: Number(st.end_location.lng) },
+          ];
+        } else {
+          st.points = filtered;
+        }
+      }
     }
   }
 

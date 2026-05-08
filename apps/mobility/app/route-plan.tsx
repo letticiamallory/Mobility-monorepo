@@ -20,7 +20,11 @@ import { A11Y_HIT_SLOP } from '@/constants/accessibility';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
 import { API_URL } from '../constants/api';
-import { fetchDiverseRoutes } from '../services/fetch-diverse-routes';
+import {
+  fetchDiverseRoutes,
+  RoutesAllTimedOutError,
+  RoutesUnauthorizedError,
+} from '../services/fetch-diverse-routes';
 import { getToken, getUserInfo } from '../services/token.service';
 import { isRouteWithinMobilityCoverage } from '../utils/mobility-coverage';
 
@@ -78,7 +82,10 @@ async function fetchPackagedRoutes(
       alone: payload.alone as unknown[],
       companied: payload.companied as unknown[],
     };
-  } catch {
+  } catch (err) {
+    if (err instanceof RoutesUnauthorizedError || err instanceof RoutesAllTimedOutError) {
+      throw err;
+    }
     return { alone: [], companied: [] };
   }
 }
