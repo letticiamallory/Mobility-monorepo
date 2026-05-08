@@ -12,7 +12,7 @@ Demonstração do app em vídeo curto no YouTube: clique na imagem para abrir o 
 
 [![Pré-visualização do vídeo — demo Mobility no YouTube](https://img.youtube.com/vi/OAHwycyjaSU/hqdefault.jpg)](https://www.youtube.com/shorts/OAHwycyjaSU)
 
-**[Abrir demo no YouTube (Short)](https://www.youtube.com/shorts/OAHwycyjaSU)** — se a miniatura não carregar, use o link direto.
+**[Abrir demo no YouTube (Short)](https://www.youtube.com/shorts/OAHwycyjaSU)**  se a miniatura não carregar, use o link direto.
 
 ---
 
