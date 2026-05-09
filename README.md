@@ -18,7 +18,7 @@ Demonstração do app em vídeo curto no YouTube: clique na imagem para abrir o 
 
 ## Screenshots
 
-Telas do app em uso (fluxo de direções e linhas — exemplo em São Paulo).
+Telas do app em uso (fluxo de direções e linhas. Exemplo em São Paulo).
 
 | Splash | Início (home) |
 |:------:|:-------------:|
