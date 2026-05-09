@@ -2,7 +2,7 @@
 
 Monorepo com o **aplicativo móvel** (Expo / React Native) e a **API** (NestJS) do projeto **Mobility**: mobilidade urbana com foco em **planejamento de rotas** e experiências pensadas para **acessibilidade**, integrando **roteamento multimodal** (OpenTripPlanner), dados auxiliares (Google Maps / Places, elevação, clima, etc.) e autenticação.
 
-Este documento descreve a **arquitetura**, como **rodar** front e back, variáveis de ambiente e fluxos úteis para desenvolvimento e deploy — sem substituir detalhes locais que você mantém em `.env` (nunca commitadas).
+Este documento descreve a **arquitetura**, como **rodar** front e back, variáveis de ambiente e fluxos úteis para desenvolvimento e deploy: sem substituir detalhes locais que você mantém em `.env` (nunca commitadas).
 
 ---
 
